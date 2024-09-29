@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require("express");
 const { customErrors, prismaErrors } = require("./errors");
-const apiRouter = require("./routes/ApiRouter");
+const apiRouter = require("./Routes/ApiRouter");
 const cors = require("cors");
 
 const app = express();
