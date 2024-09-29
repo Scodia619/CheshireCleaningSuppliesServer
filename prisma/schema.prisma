@@ -22,9 +22,12 @@ model Product {
   name        String
   description String
   image_url   String
+  tagId Int
+  tag Tags @relation(fields: [tagId], references: [tag_id])
 }
 
 model Tags {
   tag_id Int @id @default(autoincrement())
-  tag_name String @unique
+  tag_name String
+  products Product[]
 }

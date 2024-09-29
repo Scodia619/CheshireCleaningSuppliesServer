@@ -3,8 +3,6 @@ const request = require("supertest");
 const { expect } = require("@jest/globals");
 const seed = require("../prisma/seed");
 
-beforeEach(() => seed());
-
 //PRODUCTS
 describe("Get All Products", () => {
   test("200 - Gets All Products and returns the items in a list", () => {
@@ -17,12 +15,32 @@ describe("Get All Products", () => {
           product_id: 1,
           name: "White Roll",
           description: "A cleaning roll",
+          tagId: 1,
           image_url:
             "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRq4StzxY42Q8DL4z8H-_QotWGziier20XdM32xQgnqxBSwlU4TpVdp3kscXijwyBnn3rX_REuzsjFuGRbnjndE9mt-KFLAobQKx-O3Tt8vsMVv5wLe0CEFZRqwDkikgPr_KDT8dc0&usqp=CAc7RRvU0oLrkLqqmBpVdH30AAAAA=",
         });
       });
   });
 });
+
+describe("Getting Products by a Tag", ()=>{
+  test("200 - Gets products with correct tag", ()=>{
+    return request(app)
+    .get("/api/products/Cleaning")
+    .expect(200)
+    .then(({body: {products}})=>{
+      expect(products).toHaveLength(1);
+      expect(products[0]).toMatchObject({
+        product_id: 1,
+        name: "White Roll",
+        description: "A cleaning roll",
+        tagId: 1,
+        image_url:
+          "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRq4StzxY42Q8DL4z8H-_QotWGziier20XdM32xQgnqxBSwlU4TpVdp3kscXijwyBnn3rX_REuzsjFuGRbnjndE9mt-KFLAobQKx-O3Tt8vsMVv5wLe0CEFZRqwDkikgPr_KDT8dc0&usqp=CAc7RRvU0oLrkLqqmBpVdH30AAAAA=",
+      });
+    })
+  })
+})
 
 //TAGS
 describe("Gets All Tags", ()=>{
@@ -31,11 +49,11 @@ describe("Gets All Tags", ()=>{
     .get("/api/tags")
     .expect(200)
     .then(({body: {tags}}) => {
-      expect(tags).toHaveLength(1);
+      expect(tags).toHaveLength(2);
       tags.forEach((tag) => {
         expect(tag).toMatchObject({
-          tag_id: 1,
-          tag_name: "Cleaning"
+          tag_id: expect.any(Number),
+          tag_name: expect.any(String)
         })
       })
     })
@@ -77,13 +95,13 @@ describe("Post new tag", () => {
     return request(app)
     .post("/api/tags")
     .send({
-      tag_name: "Car Supplies"
+      tag_name: "Janitor"
     })
     .expect(201)
     .then(({body : {tag}}) => {
       expect(tag).toMatchObject({
-        tag_id: 2,
-        tag_name: "Car Supplies"
+        tag_id: 3,
+        tag_name: "Janitor"
       })
     })
   }),

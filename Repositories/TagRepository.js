@@ -7,14 +7,13 @@ exports.SelectAllTags = async () => {
 }
 
 exports.SelectUniqueTag = async (name) => {
-    const tag = await prisma.tags.findUnique(
+    return await prisma.tags.findFirstOrThrow(
         {
             where: {
                 tag_name: name
             }
         }
     )
-    return tag
 }
 
 exports.InsertTag = async (tagName) => {
