@@ -1,24 +1,31 @@
 const { SelectAllProducts, SelectProductByTag } = require("../Repositories/ProductRepository");
 const { SelectUniqueTag } = require("../Repositories/TagRepository");
 
-exports.GetAllProducts = async (req, res, next) => {
+const GetAllProducts = async (req, res, next) => {
   try {
-    const products = await SelectAllProducts()
+    const products = await SelectAllProducts();
+    console.log("Controller");
     return res.status(200).send({ products });
   } catch (err) {
-    next();
+    next(err); // Pass the error to the next middleware
   }
 };
 
-exports.GetProductsByTag = async (req, res, next) => {
-  const { tag_name } = req.params
+const GetProductsByTag = async (req, res, next) => {
+  const { tag_name } = req.params;
   if (!isNaN(parseInt(tag_name))) {
-    return res.status(400).send({ message: "Invalid Data Type for TagName" })
+    return res.status(400).send({ message: "Invalid Data Type for TagName" });
   }
-  const checkTag = await SelectUniqueTag(tag_name)
+  const checkTag = await SelectUniqueTag(tag_name);
   if (!checkTag) {
-    res.status(404).send({ message: "No tag found" })
+    return res.status(404).send({ message: "No tag found" });
   }
   const products = await SelectProductByTag(checkTag.tag_id);
-  return res.status(200).send({ products })
-}
+  return res.status(200).send({ products });
+};
+
+// Export both functions
+module.exports = {
+  GetAllProducts,
+  GetProductsByTag
+};

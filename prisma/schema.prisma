@@ -20,7 +20,6 @@ model User {
 model Product {
   product_id  Int    @id @default(autoincrement())
   name        String
-  description String
   image_url   String
   tagId Int
   tag Tags @relation(fields: [tagId], references: [tag_id])
