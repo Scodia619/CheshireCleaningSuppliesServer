@@ -4,7 +4,7 @@ incorrectDataError.msg = "Incorrect Data Type";
 
 const conflictDataError = new Error();
 conflictDataError.status = 409;
-conflictDataError.message = "A piece of data isnt unique"
+conflictDataError.msg = "A piece of data isnt unique"
 
 module.exports = {
     incorrectDataError,

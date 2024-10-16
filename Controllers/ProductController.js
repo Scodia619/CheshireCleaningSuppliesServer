@@ -4,7 +4,6 @@ const { SelectUniqueTag } = require("../Repositories/TagRepository");
 const GetAllProducts = async (req, res, next) => {
   try {
     const products = await SelectAllProducts();
-    console.log("Controller");
     return res.status(200).send({ products });
   } catch (err) {
     next(err); // Pass the error to the next middleware
