@@ -12,8 +12,8 @@ model User {
   username  String
   email     String
   phone     String
+  address   String
   postcode  String
-  number    Int
   password  String
 }
 
