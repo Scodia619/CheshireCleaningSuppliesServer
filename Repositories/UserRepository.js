@@ -6,8 +6,8 @@ exports.InsertUserAsync = async (user) => {
 }
 
 exports.SelectUserByUsername = async (username) => {
-    var result = await prisma.user.findMany({where: {username: username}});
-    return result.length > 0;
+    var result = await prisma.user.findUnique({where: {username: username}});
+    return result;
 }
 
 exports.SelectUserByEmail = async (email) => {

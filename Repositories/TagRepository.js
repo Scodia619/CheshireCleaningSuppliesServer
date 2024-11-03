@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 exports.SelectAllTags = async () => {
     const tags = await prisma.tags.findMany()
+    console.log(tags)
     return tags
 }
 

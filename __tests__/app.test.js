@@ -142,7 +142,7 @@ describe("Creating a new user", () => {
     return request(app)
       .post("/api/user")
       .send(user)
-      .expect(200)
+      .expect(201)
       .then(({ body: { user } }) => {
         expect(user).toMatchObject({
           user_id: expect.any(Number),
@@ -187,5 +187,74 @@ describe("Creating a new user", () => {
       .then(({ body: { msg }}) => {
         expect(msg).toEqual("A piece of data isnt unique")
       })
+  })
+})
+
+describe.only("Logging in a user", () => {
+  test("200 - Correctly logs in a user", () => {
+    var user = {
+      username: "Scodia619",
+      password: "password"
+    }
+
+    return request(app)
+    .post("/api/user/login")
+    .send(user)
+    .expect(200)
+    .then(({body: {user}}) => {
+      expect(user).toMatchObject({
+        user_id: expect.any(Number),
+        username: "Scodia619",
+        email: "billyjoe2701@gmail.com",
+        phone: "07951882145",
+        address: "25 Grafton Street",
+        postcode: "WA10 4HQ",
+        password: expect.any(String)
+      })
+    })
+  })
+
+  test("400 - Incorrect Data", () => {
+    var user = {
+      username: "Scodia619",
+    }
+
+    return request(app)
+    .post("/api/user/login")
+    .send(user)
+    .expect(400)
+    .then(({ body : { msg }}) => {
+      expect(msg).toEqual("Incorrect Data Type")
+    })
+  })
+
+  test("401 - Incorrect Password", () => {
+    var user = {
+      username: "Scodia619",
+      password: "1234!"
+    }
+
+    return request(app)
+    .post("/api/user/login")
+    .send(user)
+    .expect(401)
+    .then(({ body : { msg }}) => {
+      expect(msg).toEqual("Password is incorrect")
+    })
+  })
+
+  test("404 - User not found", () => {
+    var user = {
+      username: "Scodia617",
+      password: "password"
+    }
+
+    return request(app)
+    .post("/api/user/login")
+    .send(user)
+    .expect(404)
+    .then(({ body : { msg }}) => {
+      expect(msg).toEqual("Data not found")
+    })
   })
 })

@@ -1,9 +1,10 @@
 const { SelectAllProducts, SelectProductByTag } = require("../Repositories/ProductRepository");
 const { SelectUniqueTag } = require("../Repositories/TagRepository");
+const { GetAllProductsAsync, GetProductsByTagAsync } = require("../Services/ProductService");
 
 const GetAllProducts = async (req, res, next) => {
   try {
-    const products = await SelectAllProducts();
+    const products = await GetAllProductsAsync();
     return res.status(200).send({ products });
   } catch (err) {
     next(err); // Pass the error to the next middleware
@@ -11,15 +12,7 @@ const GetAllProducts = async (req, res, next) => {
 };
 
 const GetProductsByTag = async (req, res, next) => {
-  const { tag_name } = req.params;
-  if (!isNaN(parseInt(tag_name))) {
-    return res.status(400).send({ message: "Invalid Data Type for TagName" });
-  }
-  const checkTag = await SelectUniqueTag(tag_name);
-  if (!checkTag) {
-    return res.status(404).send({ message: "No tag found" });
-  }
-  const products = await SelectProductByTag(checkTag.tag_id);
+  const products = await GetProductsByTagAsync(req);
   return res.status(200).send({ products });
 };
 

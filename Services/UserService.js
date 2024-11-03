@@ -1,6 +1,6 @@
-const { conflictDataError, incorrectDataError } = require("../ErrorConstants");
+const { conflictDataError, incorrectDataError, notFoundError, incorrectPasswordError } = require("../ErrorConstants");
 const { SelectUserByUsername, SelectUserByEmail, InsertUserAsync } = require("../Repositories/UserRepository");
-const { EncryptPassword } = require("../Utils/Passwords");
+const { EncryptPassword, VerifyPassword } = require("../Utils/Passwords");
 
 exports.CreateNewUserAsync = async (request) => {
 
@@ -30,4 +30,27 @@ exports.CreateNewUserAsync = async (request) => {
 
     return await InsertUserAsync(newUser);
 
+}
+
+exports.LoginUserAsync = async (request) => {
+    const {username, password} = request.body;
+
+    if ([username, password].some(value => value == null || typeof value !== 'string')) {
+        throw incorrectDataError;
+    }
+
+    const user = await SelectUserByUsername(username);
+
+    if(!user){
+        throw notFoundError;
+    }
+
+    var verifyPassword = await VerifyPassword(password, user.password);
+
+    if(!verifyPassword){
+        throw incorrectPasswordError;
+    }
+
+    return user;
+    
 }

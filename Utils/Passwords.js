@@ -8,3 +8,12 @@ exports.EncryptPassword = async (password) => {
         throw err;
     }
 }
+
+exports.VerifyPassword = async (password, hashedPassword) => {
+    try {
+        const isMatch = await bcrypt.compare(password, hashedPassword);
+        return isMatch;
+    } catch (err) {
+        throw err;
+    }
+}
