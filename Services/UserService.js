@@ -1,4 +1,4 @@
-const { conflictDataError, incorrectDataError, notFoundError, incorrectPasswordError } = require("../ErrorConstants");
+const { conflictDataError, incorrectDataError, usernameNotFound, incorrectPasswordError } = require("../ErrorConstants");
 const { SelectUserByUsername, SelectUserByEmail, InsertUserAsync } = require("../Repositories/UserRepository");
 const { EncryptPassword, VerifyPassword } = require("../Utils/Passwords");
 
@@ -42,7 +42,7 @@ exports.LoginUserAsync = async (request) => {
     const user = await SelectUserByUsername(username);
 
     if(!user){
-        throw notFoundError;
+        throw usernameNotFound;
     }
 
     var verifyPassword = await VerifyPassword(password, user.password);
