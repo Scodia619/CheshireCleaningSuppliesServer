@@ -243,7 +243,7 @@ describe.only("Logging in a user", () => {
     })
   })
 
-  test("404 - User not found", () => {
+  test.only("404 - User not found", () => {
     var user = {
       username: "Scodia617",
       password: "password"
@@ -254,7 +254,7 @@ describe.only("Logging in a user", () => {
     .send(user)
     .expect(404)
     .then(({ body : { msg }}) => {
-      expect(msg).toEqual("Data not found")
+      expect(msg).toEqual("Username does not exist")
     })
   })
 })

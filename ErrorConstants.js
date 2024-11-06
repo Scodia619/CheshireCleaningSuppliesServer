@@ -16,7 +16,7 @@ incorrectPasswordError.msg = "Password is incorrect"
 
 const usernameNotFound = new Error();
 usernameNotFound.status = 404
-usernameNotFound.message = "Username does not exist"
+usernameNotFound.msg = "Username does not exist"
 
 module.exports = {
     incorrectDataError,
