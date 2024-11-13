@@ -15,6 +15,7 @@ model User {
   address   String
   postcode  String
   password  String
+  orders Order[]
 }
 
 model Product {
@@ -23,10 +24,30 @@ model Product {
   image_url   String
   tagId Int
   tag Tags @relation(fields: [tagId], references: [tag_id])
+  orderItems OrderItem[]
 }
 
 model Tags {
   tag_id Int @id @default(autoincrement())
   tag_name String
   products Product[]
+}
+
+model Order {
+  order_id          Int         @id @default(autoincrement())
+  user        User        @relation(fields: [user_id], references: [user_id])
+  user_id      Int
+  date        DateTime    @default(now())
+  status      String
+  orderItems  OrderItem[]
+}
+
+
+model OrderItem {
+  item_id        Int      @id @default(autoincrement())
+  order     Order    @relation(fields: [order_id], references: [order_id])
+  order_id   Int
+  product   Product  @relation(fields: [product_id], references: [product_id])
+  product_id Int
+  quantity  Int
 }

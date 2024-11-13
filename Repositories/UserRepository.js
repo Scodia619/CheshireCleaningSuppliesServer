@@ -14,3 +14,7 @@ exports.SelectUserByEmail = async (email) => {
     var result = await prisma.user.findMany({where: {email: email}});
     return result.length > 0;
 }
+
+exports.SelectUserById = async (id) => {
+    return await prisma.user.findUnique({where: {user_id: id}})
+}
