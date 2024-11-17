@@ -9,3 +9,11 @@ exports.CreateOrder = async (userId, status) => {
 exports.CreateOrderItems = async (orderItemsData) => {
     return await prisma.orderItem.createMany({data: orderItemsData})
 }
+
+exports.GetAllOrdersAsync = async () => {
+    return await prisma.order.findMany({take: 10});
+}
+
+exports.GetOrdersByUserIdAsync = async (userId) => {
+    return await prisma.order.findMany({where: {user_id: userId}})
+}
