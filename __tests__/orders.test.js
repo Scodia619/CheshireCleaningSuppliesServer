@@ -84,6 +84,7 @@ describe("Gets all orders in the DB", () => {
                         user_id: expect.any(Number),
                         date: expect.any(String),
                         status: expect.any(String),
+                        orderItems: expect.any(Array)
                     })
                 })
             })
@@ -103,6 +104,7 @@ describe("Gets all orders a user has placed", () => {
                         user_id: expect.any(Number),
                         date: expect.any(String),
                         status: expect.any(String),
+                        orderItems: expect.any(Array)
                     })
                 })
             })
