@@ -30,6 +30,7 @@ exports.GetOrdersByUserAsync = async (req, res, next) => {
 exports.UpdateOrdersByIdAsync = async (req, res, next) => {
     try{
         const updatedOrder = await UpdateOrderByOrderIdAsync(req)
+        console.log(updatedOrder)
         return res.status(200).send({updatedOrder})
     } catch(err) {
         next(err)
