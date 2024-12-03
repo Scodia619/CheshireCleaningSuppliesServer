@@ -48,6 +48,13 @@ exports.UpdateOrderStatusAsync = async (orderId) => {
 
 exports.GetOrderByIdAsync = async (orderId) => {
     return await prisma.order.findUnique({
-        where: {order_id: orderId}
+        where: {order_id: orderId},
+        include: {
+            orderItems: {
+                include: {
+                    product: true,
+                },
+            },
+        },
     })
 }
