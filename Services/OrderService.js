@@ -51,7 +51,11 @@ exports.GetOrdersByUserAsync = async (request) => {
 
 exports.UpdateOrderByOrderIdAsync = async (request) => {
     const {orderId} = request.params
-    if (!parseInt(orderId)) {
+    const {orderStatus} = request.query
+
+    const statusOptions = ["Confirmed", "Cancelled"]
+
+    if (!parseInt(orderId) || !statusOptions.includes(orderStatus)) {
         throw incorrectDataError;
     }
 
@@ -59,7 +63,7 @@ exports.UpdateOrderByOrderIdAsync = async (request) => {
     if(!orderExists) throw notFoundError
 
     try{
-        return await UpdateOrderStatusAsync(parseInt(orderId))
+        return await UpdateOrderStatusAsync(parseInt(orderId), orderStatus)
     } catch (err){
         next(err)
     }

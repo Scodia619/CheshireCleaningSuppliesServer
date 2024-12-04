@@ -35,13 +35,13 @@ exports.GetOrdersByUserIdAsync = async (userId) => {
     })
 }
 
-exports.UpdateOrderStatusAsync = async (orderId) => {
+exports.UpdateOrderStatusAsync = async (orderId, orderStatus) => {
     return await prisma.order.update({
         where: {
           order_id: orderId,
         },
         data: {
-          status: "Confirmed",
+          status: orderStatus,
         },
         include: {
             orderItems: {

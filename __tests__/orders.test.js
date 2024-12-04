@@ -130,16 +130,33 @@ describe("Gets all orders a user has placed", () => {
 describe("Updating an order status", ()=> {
     test("200 - Order status changed to Confirmed", ()=>{
         return request(app)
-            .patch("/api/order/update/1")
+            .patch("/api/order/update/1?orderStatus=Confirmed")
             .expect(200)
             .then(({body: {updatedOrder}}) => {
                 expect(updatedOrder.order_id).toEqual(1)
                 expect(updatedOrder.status).toEqual("Confirmed")
             })
     })
+    test("200 - Order status changed to Confirmed", ()=>{
+        return request(app)
+            .patch("/api/order/update/1?orderStatus=Cancelled")
+            .expect(200)
+            .then(({body: {updatedOrder}}) => {
+                expect(updatedOrder.order_id).toEqual(1)
+                expect(updatedOrder.status).toEqual("Cancelled")
+            })
+    })
     test("400 - Incorrect data for OrderId", ()=>{
         return request(app)
-            .patch("/api/order/update/banana")
+            .patch("/api/order/update/banana?orderStatus=Confirmed")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Incorrect Data Type")
+            })
+    })
+    test("400 - Incorrect data for OrderId", ()=>{
+        return request(app)
+            .patch("/api/order/update/banana?orderStatus=Unconfirmed")
             .expect(400)
             .then(({body: {msg}}) => {
                 expect(msg).toBe("Incorrect Data Type")
@@ -147,7 +164,7 @@ describe("Updating an order status", ()=> {
     })
     test("404 - Order not found", ()=> {
         return request(app)
-            .patch("/api/order/update/9999")
+            .patch("/api/order/update/9999?orderStatus=Confirmed")
             .expect(404)
             .then(({body: {msg}}) => {
                 expect(msg).toBe("Data not found")
