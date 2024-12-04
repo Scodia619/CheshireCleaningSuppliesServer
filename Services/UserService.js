@@ -25,7 +25,8 @@ exports.CreateNewUserAsync = async (request) => {
         phone,
         address,
         postcode,
-        password: hashedPassword
+        password: hashedPassword,
+        admin: false
     };
 
     return await InsertUserAsync(newUser);
