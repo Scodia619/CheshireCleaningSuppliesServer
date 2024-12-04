@@ -1,5 +1,5 @@
 const { incorrectDataError, notFoundError } = require("../ErrorConstants");
-const { CreateOrder, CreateOrderItems, GetOrdersByUserIdAsync, GetAllOrdersAsync, GetOrderByIdAsync, UpdateOrderStatusAsync } = require("../Repositories/OrderRepository");
+const { CreateOrder, CreateOrderItems, GetOrdersByUserIdAsync, GetAllOrdersAsync, GetOrderByIdAsync, UpdateOrderStatusAsync, UpdatePaymentStatusAsync } = require("../Repositories/OrderRepository");
 const { SelectUserById } = require("../Repositories/UserRepository");
 
 exports.CreateNewOrderAsync = async (request) => {
@@ -69,3 +69,22 @@ exports.UpdateOrderByOrderIdAsync = async (request) => {
     }
 
 }
+
+exports.UpdatePaymentStatusByOrderIdAsync = async (request) => {
+    const {orderId} = request.params
+
+    if (!parseInt(orderId)) {
+        throw incorrectDataError;
+    }
+
+    const orderExists = await GetOrderByIdAsync(parseInt(orderId));
+    if(!orderExists) throw notFoundError
+
+    try{
+        return await UpdatePaymentStatusAsync(parseInt(orderId))
+    } catch (err){
+        next(err)
+    }
+
+}
+

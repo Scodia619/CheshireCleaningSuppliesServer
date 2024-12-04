@@ -1,4 +1,4 @@
-const { CreateNewOrderAsync, GetOrdersAsync, GetOrdersByUserAsync, UpdateOrderByOrderIdAsync } = require("../Services/OrderService");
+const { CreateNewOrderAsync, GetOrdersAsync, GetOrdersByUserAsync, UpdateOrderByOrderIdAsync, UpdatePaymentStatusByOrderIdAsync } = require("../Services/OrderService");
 
 exports.PostOrderAsync = async (req, res, next) => {
     try {
@@ -30,6 +30,15 @@ exports.GetOrdersByUserAsync = async (req, res, next) => {
 exports.UpdateOrdersByIdAsync = async (req, res, next) => {
     try{
         const updatedOrder = await UpdateOrderByOrderIdAsync(req)
+        return res.status(200).send({updatedOrder})
+    } catch(err) {
+        next(err)
+    }
+}
+
+exports.UpdatePaymentStatusByIdAsync = async (req, res, next) => {
+    try{
+        const updatedOrder = await UpdatePaymentStatusByOrderIdAsync(req)
         return res.status(200).send({updatedOrder})
     } catch(err) {
         next(err)

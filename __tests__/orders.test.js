@@ -171,3 +171,31 @@ describe("Updating an order status", ()=> {
             })
     })
 })
+
+describe("Updating a payment status", () => {
+    test("200 - Payment status updated successfully", ()=>{
+        return request(app)
+            .patch("/api/order/update/27/payment")
+            .expect(200)
+            .then(({body: {updatedOrder}}) => {
+                expect(updatedOrder.order_id).toEqual(27)
+                expect(updatedOrder.paid).toEqual(true)
+            })
+    })
+    test("400 - Incorrect Data", ()=>{
+        return request(app)
+            .patch("/api/order/update/banana/payment")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Incorrect Data Type")
+            })
+    })
+    test("404 - Order not found", ()=>{
+        return request(app)
+            .patch("/api/order/update/999/payment")
+            .expect(404)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Data not found")
+            })
+    })
+})

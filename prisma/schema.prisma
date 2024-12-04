@@ -39,6 +39,7 @@ model Order {
   user_id      Int
   date        DateTime    @default(now())
   status      String
+  paid        Boolean
   orderItems  OrderItem[]
 }
 

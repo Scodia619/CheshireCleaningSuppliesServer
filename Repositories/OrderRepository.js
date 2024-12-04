@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 exports.CreateOrder = async (userId, status) => {
-    const newOrder = { user_id: userId, status: status }
+    const newOrder = { user_id: userId, status: status, paid: false }
     return await prisma.order.create({ data: newOrder })
 }
 
@@ -42,6 +42,24 @@ exports.UpdateOrderStatusAsync = async (orderId, orderStatus) => {
         },
         data: {
           status: orderStatus,
+        },
+        include: {
+            orderItems: {
+                include: {
+                    product: true,
+                },
+            },
+        },
+      });
+}
+
+exports.UpdatePaymentStatusAsync = async (orderId) => {
+    return await prisma.order.update({
+        where: {
+          order_id: orderId,
+        },
+        data: {
+          paid: true,
         },
         include: {
             orderItems: {
