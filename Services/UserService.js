@@ -69,13 +69,15 @@ exports.UpdateUserByUsernameAsync = async (request) => {
         throw usernameNotFound;
     }
 
+    const hashedPassword = await EncryptPassword(password);
+
     const userData = {
         username,
         email,
         phone,
         address,
         postcode,
-        password
+        password: hashedPassword
     }
 
     return await UpdateUserByUsername(userData);
