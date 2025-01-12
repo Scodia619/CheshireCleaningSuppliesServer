@@ -1,4 +1,4 @@
-const { CreateNewUserAsync, LoginUserAsync } = require("../Services/UserService");
+const { CreateNewUserAsync, LoginUserAsync, UpdateUserByUsernameAsync } = require("../Services/UserService");
 
 exports.PostUserAsync = async (req, res, next) => {
     try {
@@ -13,6 +13,16 @@ exports.PostUserAsync = async (req, res, next) => {
 exports.LoginUserAsync = async (req, res, next) => {
   try{
     const user = await LoginUserAsync(req);
+    if(user.error) throw user.error;
+    return res.status(200).send({user})
+  }catch(err){
+    next(err)
+  }
+}
+
+exports.UpdateUserByUsername = async (req, res, next) => {
+  try{
+    const user = await UpdateUserByUsernameAsync(req)
     if(user.error) throw user.error;
     return res.status(200).send({user})
   }catch(err){

@@ -18,3 +18,7 @@ exports.SelectUserByEmail = async (email) => {
 exports.SelectUserById = async (id) => {
     return await prisma.user.findUnique({where: {user_id: id}})
 }
+
+exports.UpdateUserByUsername = async (user) => {
+    return await prisma.user.update({where: {username: user.username}, data: user})
+}

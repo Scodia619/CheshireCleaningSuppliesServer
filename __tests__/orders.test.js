@@ -137,7 +137,7 @@ describe("Updating an order status", ()=> {
                 expect(updatedOrder.status).toEqual("Confirmed")
             })
     })
-    test("200 - Order status changed to Confirmed", ()=>{
+    test("200 - Order status changed to Cancelled", ()=>{
         return request(app)
             .patch("/api/order/update/1?orderStatus=Cancelled")
             .expect(200)
